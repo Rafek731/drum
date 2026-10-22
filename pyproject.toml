@@ -1,0 +1,19 @@
+[project]
+name = "drum"
+version = "0.1.0"
+description = "Simulation of vibrating drum"
+readme = "README.md"
+authors = [
+    { name = "Rafał Mazur", email = "rafalmazur.w@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "wolframclient>=1.4.0",
+]
+
+[project.scripts]
+drum = "drum:main"
+
+[build-system]
+requires = ["uv_build>=0.12.23,<0.13.0"]
+build-backend = "uv_build"
