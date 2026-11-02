@@ -1,43 +1,37 @@
-If[! ValueQ[A], A = 1.];
-If[! ValueQ[meshNum], meshNum = 15];
-If[! ValueQ[totalFrames], totalFrames = 30];
-If[! ValueQ[framesPerSecond], framesPerSecond = 15];
+Options[makeGif] = {"Amplitude" -> 1., "Mesh" -> 15, "Frames" -> 30, "FPS" -> 15};
 
-saveDir = FileNameJoin[{Directory[], "Pictures"}];
-
-(* cache BJ0 and omega for faster computation *)
-
+(* cache BJ0 for faster computation *)
 BJ0[m_, n_] := BJ0[m, n] = N@BesselJZero[m, n];
 
-\[Omega][m_, n_] := \[Omega][m, n] = BJ0[m, n];
+(* c/R shouold be here *)
+\[Omega][m_, n_] := BJ0[m, n];
 
-getFrame[m_, n_, t_] := Module[{x, y},
+radial[m_, n_, x_, y_] := BesselJ[m, Sqrt[x^2 + y^2] BJ0[m, n]];
+angular[m_, n_, x_, y_] := Cos[m ArcTan[x, y]];
+time[m_, n_, t_] := Sin[\[Omega][m, n] t];
+
+getFrame[m_, n_, t_, a_, mesh_] := Module[{x, y},
    Plot3D[
-        A BesselJ[m, Sqrt[x^2 + y^2] BJ0[m, n]] Re[((x + I y)/Sqrt[x^2 + y^2])^m] Sin[\[Omega][m, n] t],
+        a radial[m, n, x, y] angular[m, n, x, y] time[m, n, t],
         {x, y} \[Element] Disk[{0, 0}, 1],
         PlotRange -> {{-1, 1}, {-1, 1}, {-1.1, 1.1}},
         SphericalRegion -> True,
-        Mesh -> meshNum,
+        Mesh -> mesh,
         BoxRatios -> {1, 1, 0.4}
     ]
 ];
 
-makeGif[m_, n_] := Module[{T, dT, frames, path},
+makeGif[m_, n_, path_, OptionsPattern[]] := Module[{a, mesh, nf, T, dT, frames},
+    a = OptionValue["Amplitude"];
+    mesh = OptionValue["Mesh"];
+    nf = OptionValue["Frames"];
     T = N[(2 \[Pi])/\[Omega][m, n]];
-    dT = N[T/totalFrames];
-    frames = ParallelTable[
-        getFrame[m, n, t],
-        {t, 0, T - dT, dT}
-    ];
-    path = FileNameJoin[{saveDir, StringTemplate["membrane_`1`_`2`.gif"][m, n]}];
-    Export[
-        path,
-        frames,
+    dT = T/nf;
+    frames = ParallelTable[getFrame[m, n, i dT, a, mesh], {i, 0, nf - 1}];
+    Export[path, frames,
         "AnimationRepetitions" -> Infinity,
-        "DisplayDurations" -> 1/framesPerSecond
-    ];
-    path
+        "DisplayDurations" -> 1/OptionValue["FPS"]]
 ];
 
 If[Length[ParallelKernels[]] == 0, LaunchKernels[]];
-DistributeDefinitions[A, BJ0];
+DistributeDefinitions[BJ0, \[Omega], radial, angular, time, getFrame];
