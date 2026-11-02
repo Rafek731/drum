@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-@dataclass
+@dataclass(frozen=True)
 class RenderConfig:
     amplitude: float
     fps: int
@@ -16,7 +16,7 @@ class RenderConfig:
         if self.mesh < 0:
             raise ValueError("Number of mesh lines cannot be negative.")
 
-@dataclass
+@dataclass(frozen=True)
 class Mode:
     m: int
     n: int
@@ -26,3 +26,5 @@ class Mode:
             raise ValueError("m cannot be negative.")
         if self.n < 1:
             raise ValueError("n must be at least 1.")
+
+WL_SCRIPT_PATH = Path(__file__).parent / "wolfram" / "drum.wl"
