@@ -43,7 +43,7 @@ class WolframRenderer:
         self._session.stop()
 
     def render(self, mode: Mode) -> Path:
-        """Render one mode to a GIF named membrane_<m>_<n>.gif.
+        """Render one mode to a GIF named mode_<m>_<n>.gif.
 
         Args:
             mode: The mode to render.
@@ -56,7 +56,7 @@ class WolframRenderer:
         """
         print("Munching...")
         c = self.config
-        path = self.outdir / f"membrane_{mode.m}_{mode.n}.gif"
+        path = self.outdir / f"mode_{mode.m}_{mode.n}.gif"
 
         result = self._session.evaluate_wrap(
             wl.Global.makeGif(
