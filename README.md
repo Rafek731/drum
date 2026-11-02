@@ -18,7 +18,7 @@ $$\frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u, \qquad u(R, \varphi, t) = 
 
 Separating variables in polar coordinates and solving the [Helmholtz equation](https://en.wikipedia.org/wiki/Helmholtz_equation#Vibrating_membrane) with apropriate boundary conditions gives the normal modes
 
-$$u_{m,n}(r, \varphi, t) = A \, J_m\left(k_{m,n} \frac{r}{R}\right) \, \cos(m\varphi) \, \sin(\omega_{m,n} t), \qquad \omega_{m,n} = \frac{c\, k_{m,n}}{R},$$
+$$u_{m,n}(r, \varphi, t) = A J_m\left(k_{m,n} \frac{r}{R}\right) \cos(m\varphi) \sin(\omega_{m,n} t), \qquad \omega_{m,n} = \frac{c k_{m,n}}{R},$$
 
 where $J_m$ is the Bessel function of order $m$ and $k_{m,n}$ is the wave number, which must satisfy $k_{m,n} = j_{m,n}$ ($j_{m,n}$ is $n$-th root of $J_m$).
 
