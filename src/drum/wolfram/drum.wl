@@ -1,9 +1,18 @@
+(* Vibration modes of a circular membrane fixed at its edge.
+
+   radius R = 1, wave speed c = 1. Mode (m, n) has the shape
+     u(r, \[Phi], t) = A J_m(k r) cos(m \[Phi]) sin(\[Omega] t),
+   where k is the n-th zero of J_m and \[Omega] = k.
+
+   Loading this file launches the parallel subkernels and sends them
+   the definitions; call makeGif afterwards. *)
+
 Options[makeGif] = {"Amplitude" -> 1., "Mesh" -> 15, "Frames" -> 30, "FPS" -> 15};
 
 (* cache BJ0 for faster computation *)
 BJ0[m_, n_] := BJ0[m, n] = N@BesselJZero[m, n];
 
-(* c/R shouold be here *)
+(* c/R should be here but for us it = 1 so skip *)
 \[Omega][m_, n_] := BJ0[m, n];
 
 radial[m_, n_, x_, y_] := BesselJ[m, Sqrt[x^2 + y^2] BJ0[m, n]];

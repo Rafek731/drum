@@ -1,8 +1,20 @@
+"""Entry point of the drum command."""
+
 from drum.cli import parse_arguments
 from drum.cli.interactive_prompt import InteractivePrompt
 from drum.renderer import WolframRenderer
 
+
 def main() -> int:
+    """Run the interactive drum CLI.
+
+    Parses the options, starts one Wolfram session and renders a GIF for
+    every mode the user enters until they quit. Render errors are printed
+    and the prompt continues.
+
+    Returns:
+        The exit code (0 on normal quit).
+    """
     render_config, outdir = parse_arguments()
     prompt = InteractivePrompt()
     prompt.welcome()
@@ -19,4 +31,4 @@ def main() -> int:
     return 0
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

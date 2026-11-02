@@ -1,2 +1,1 @@
-def main() -> None:
-    print("Hello from thedrum!")
+"""drum: generate GIFs of vibrating circular membranes with Wolfram."""

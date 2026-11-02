@@ -1,8 +1,22 @@
+"""Command-line argument parsing."""
+
 import argparse
 from pathlib import Path
+
 from drum.config import RenderConfig
 
+
 def parse_arguments() -> tuple[RenderConfig, Path]:
+    """Parse the command-line options.
+
+    On invalid arguments or --help, argparse prints a message and exits.
+
+    Returns:
+        The render settings and the directory to save GIFs to.
+
+    Raises:
+        ValueError: If the values are out of range (see RenderConfig).
+    """
     parser = argparse.ArgumentParser(
         prog = "The Drum",
         description = "Generate gifs of vibrating drums",
