@@ -7,7 +7,7 @@ BJ0[m_, n_] := BJ0[m, n] = N@BesselJZero[m, n];
 \[Omega][m_, n_] := BJ0[m, n];
 
 radial[m_, n_, x_, y_] := BesselJ[m, Sqrt[x^2 + y^2] BJ0[m, n]];
-angular[m_, n_, x_, y_] := Cos[m ArcTan[x, y]];
+angular[m_, n_, x_, y_] := Re[((x + I y)/Sqrt[x^2+y^2])^m]; (* fixes the white stripe *)
 time[m_, n_, t_] := Sin[\[Omega][m, n] t];
 
 getFrame[m_, n_, t_, a_, mesh_] := Module[{x, y},
